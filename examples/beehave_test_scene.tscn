@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dxkotdttpvmb0"]
+[gd_scene load_steps=13 format=3 uid="uid://dxkotdttpvmb0"]
 
 [ext_resource type="Script" path="res://examples/beehave_test_scene.gd" id="1_18xg1"]
 [ext_resource type="Texture2D" uid="uid://uq5muso23nn5" path="res://splash.png" id="2_2q57p"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://c3msbcyat8v0n" path="res://examples/actions/SetModulateColor.tscn" id="8_0v48s"]
 [ext_resource type="PackedScene" uid="uid://dgbwmcsll3o7t" path="res://examples/conditions/HasNegativePosition.tscn" id="9_x8ohm"]
 [ext_resource type="Script" path="res://addons/beehave/blackboard.gd" id="10_y2p03"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/decorators/until_fail.gd" id="11_5vqcw"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_atdvc"]
 load_path = "res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex"
@@ -65,7 +66,7 @@ blackboard = {
 }
 
 [node name="AnotherSprite" type="Sprite2D" parent="."]
-position = Vector2(182, 180)
+position = Vector2(355, 167)
 scale = Vector2(0.1, 0.1)
 texture = SubResource("CompressedTexture2D_atdvc")
 
@@ -78,6 +79,25 @@ actor = NodePath("..")
 [node name="SelectorComposite" type="Node" parent="AnotherSprite/AnotherTree"]
 script = ExtResource("5_l2xef")
 
+[node name="UntilFailDecorator" type="Node" parent="AnotherSprite/AnotherTree/SelectorComposite"]
+script = ExtResource("11_5vqcw")
+
+[node name="SequenceComposite2" type="Node" parent="AnotherSprite/AnotherTree/SelectorComposite/UntilFailDecorator"]
+script = ExtResource("6_jtsdg")
+
+[node name="HasNegativePosition" parent="AnotherSprite/AnotherTree/SelectorComposite/UntilFailDecorator/SequenceComposite2" instance=ExtResource("9_x8ohm")]
+
+[node name="SetModulateColor" parent="AnotherSprite/AnotherTree/SelectorComposite/UntilFailDecorator/SequenceComposite2" instance=ExtResource("8_0v48s")]
+modulate_color = Color(0, 0, 1, 1)
+
+[node name="SequenceComposite2" type="Node" parent="AnotherSprite/AnotherTree/SelectorComposite/UntilFailDecorator/SequenceComposite2"]
+script = ExtResource("6_jtsdg")
+
+[node name="HasNegativePosition" parent="AnotherSprite/AnotherTree/SelectorComposite/UntilFailDecorator/SequenceComposite2/SequenceComposite2" instance=ExtResource("9_x8ohm")]
+
+[node name="SetModulateColor" parent="AnotherSprite/AnotherTree/SelectorComposite/UntilFailDecorator/SequenceComposite2/SequenceComposite2" instance=ExtResource("8_0v48s")]
+modulate_color = Color(0, 0, 1, 1)
+
 [node name="SequenceComposite" type="Node" parent="AnotherSprite/AnotherTree/SelectorComposite"]
 script = ExtResource("6_jtsdg")
 
@@ -85,22 +105,6 @@ script = ExtResource("6_jtsdg")
 
 [node name="SetModulateColor" parent="AnotherSprite/AnotherTree/SelectorComposite/SequenceComposite" instance=ExtResource("8_0v48s")]
 modulate_color = Color(1, 0, 0, 1)
-
-[node name="SequenceComposite2" type="Node" parent="AnotherSprite/AnotherTree/SelectorComposite"]
-script = ExtResource("6_jtsdg")
-
-[node name="HasNegativePosition" parent="AnotherSprite/AnotherTree/SelectorComposite/SequenceComposite2" instance=ExtResource("9_x8ohm")]
-
-[node name="SetModulateColor" parent="AnotherSprite/AnotherTree/SelectorComposite/SequenceComposite2" instance=ExtResource("8_0v48s")]
-modulate_color = Color(0, 0, 1, 1)
-
-[node name="SequenceComposite2" type="Node" parent="AnotherSprite/AnotherTree/SelectorComposite/SequenceComposite2"]
-script = ExtResource("6_jtsdg")
-
-[node name="HasNegativePosition" parent="AnotherSprite/AnotherTree/SelectorComposite/SequenceComposite2/SequenceComposite2" instance=ExtResource("9_x8ohm")]
-
-[node name="SetModulateColor" parent="AnotherSprite/AnotherTree/SelectorComposite/SequenceComposite2/SequenceComposite2" instance=ExtResource("8_0v48s")]
-modulate_color = Color(0, 0, 1, 1)
 
 [node name="SetModulateColor" parent="AnotherSprite/AnotherTree/SelectorComposite" instance=ExtResource("8_0v48s")]
 
